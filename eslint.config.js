@@ -1,12 +1,10 @@
 import js from '@eslint/js';
-import prettier from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 
 export default [
   js.configs.recommended,
   prettierConfig,
   {
-    plugins: { prettier },
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
@@ -24,7 +22,6 @@ export default [
       },
     },
     rules: {
-      'prettier/prettier': 'error',
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'no-console': 'off',
       'prefer-const': 'error',
