@@ -11,7 +11,7 @@
     "#services/*": "./src/services/*",
     "#utils/*": "./src/utils/*",
     "#middleware/*": "./src/middleware/*",
-    "#validators/*": "./src/validators/*"
+    "#validations/*": "./src/validations/*"
   },
   "scripts": {
     "dev": "node --watch src/index.js",
