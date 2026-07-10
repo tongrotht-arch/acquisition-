@@ -13,6 +13,45 @@ export const hashPassword = async (password) => {
   }
 };
 
+export const comparePassword = async (password, passwordHash) => {
+  try {
+    return await bcrypt.compare(password, passwordHash);
+  } catch (error) {
+    logger.error('Error comparing password', error);
+    throw new Error('Error comparing password', { cause: error });
+  }
+};
+
+export const authenticateUser = async (email, password) => {
+  try {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+
+    if (!user || !(await comparePassword(password, user.password))) {
+      throw new Error('Invalid credentials');
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      created_at: user.created_at,
+      updated_at: user.updated_at,
+    };
+  } catch (error) {
+    if (error.message === 'Invalid credentials') {
+      throw error;
+    }
+
+    logger.error('Error authenticating user', error);
+    throw new Error('Error authenticating user', { cause: error });
+  }
+};
+
 export const createUser = async ({ name, email, password, role = 'user' }) => {
   try {
     const existingUser = await db
